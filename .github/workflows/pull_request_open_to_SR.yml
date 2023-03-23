@@ -1,19 +1,21 @@
 # Unique name for this worklow
-name: 'Validate PR merged to QA'
+name: 'Validate PR open to UAT'
 
 # Definition when the workflow should run
 on:
   pull_request:
     types: 
-      - closed
+      - opened
+      - synchronize
+      - edited
     branches:
-    - 'deploy-qa'
+      - 'sprint-release*'
+      - 'release-branch*'
     paths:
       - force-app/**
 
 jobs:
-  validate-pr-merged-to-qa-org:
-    if: github.event.pull_request.merged == true
+  validate-pr-on-uat-org:
     runs-on: ubuntu-latest
     steps:
       # Now we install nodejs in the VM, and specify version 14
@@ -62,11 +64,11 @@ jobs:
       - name: 'Populate auth file'
         shell: bash
         run: |
-          echo ${{ secrets.ORG_QA_URL}} > ./ORG_QA_URL.txt
+          echo ${{ secrets.ORG_UAT_URL}} > ./ORG_UAT_URL.txt
 
       # Authenticate to ORG
       - name: 'Authenticate to QA org'
-        run: sfdx auth:sfdxurl:store -f ./ORG_QA_URL.txt -s -a integration
+        run: sfdx auth:sfdxurl:store -f ./ORG_UAT_URL.txt -s -a integration
 
       # Generate delta package
       - name: 'Create Delta package'
@@ -80,7 +82,7 @@ jobs:
         if: ${{ env.APEX_TESTS != 'all' }}
         run: |
           echo ${{env.APEX_TESTS}}
-          sfdx force:source:deploy -x package/package.xml --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --verbose --json
+          sfdx force:source:deploy --checkonly -x package/package.xml --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --verbose --json
 
       # If the env variable equals all, we run all tests
       - name: 'Check-only deploy delta changes - run all tests'

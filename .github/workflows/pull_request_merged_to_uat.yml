@@ -71,7 +71,7 @@ jobs:
       # Generate delta package
       - name: 'Create Delta package'
         run: |
-          sfdx sgd:source:delta --to "HEAD" --from "HEAD~7" --output "." --source force-app/
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output "." --source force-app/
           echo "-- package.xml generate by plugin --"
           cat package/package.xml
 
@@ -80,7 +80,7 @@ jobs:
         if: ${{ env.APEX_TESTS != 'all' }}
         run: |
           echo ${{env.APEX_TESTS}}
-          sfdx force:source:deploy --checkonly -x package/package.xml --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --verbose --json
+          sfdx force:source:deploy -x package/package.xml --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --verbose --json
 
       # If the env variable equals all, we run all tests
       - name: 'Check-only deploy delta changes - run all tests'
