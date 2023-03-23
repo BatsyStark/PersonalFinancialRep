@@ -57,7 +57,7 @@ jobs:
       # Generate delta package
       - name: 'Create Delta package'
         run: |
-          sfdx sgd:source:delta --to "HEAD" --from "HEAD~3" --output "." --source force-app/
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD~5" --output "." --source force-app/
           echo "-- package.xml generate by plugin --"
           cat package/package.xml
 
