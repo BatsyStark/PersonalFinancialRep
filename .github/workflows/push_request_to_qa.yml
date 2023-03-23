@@ -6,10 +6,6 @@ on:
   push:
     # branches: [feature*, release*]
     branches:
-      - 'feature*'
-      - 'release-branch*'
-      - 'release-master*'
-      - 'sprint-release*'
       - 'deploy-qa'
     path:
       - 'force-app/**'
