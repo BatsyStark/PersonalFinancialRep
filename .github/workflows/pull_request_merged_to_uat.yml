@@ -12,7 +12,7 @@ on:
       - force-app/**
 
 jobs:
-  validate-pr-merged-to-qa-org:
+  validate-pr-merged-to-uat-org:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:

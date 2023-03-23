@@ -14,7 +14,7 @@ on:
       - force-app/**
 
 jobs:
-  validate-pr-on-qa-org:
+  validate-pr-on-uat-org:
     runs-on: ubuntu-latest
     steps:
       # Now we install nodejs in the VM, and specify version 14

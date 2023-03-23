@@ -1,5 +1,5 @@
 # Unique name for this worklow
-name: 'Code Validation against QA environment'
+name: 'Code Validation against UAT environment'
 
 # Definition when the workflow should be run
 on:
@@ -12,7 +12,7 @@ on:
 
 # Jobs to be executed
 jobs:
-  validate-branch-against-qa:
+  validate-branch-against-uat:
     runs-on: ubuntu-latest
     steps:
       # Install Salesforce CLI
