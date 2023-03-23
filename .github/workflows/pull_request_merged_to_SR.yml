@@ -1,5 +1,5 @@
 # Unique name for this worklow
-name: 'Validate PR merged to QA'
+name: 'Validate PR merged to UAT'
 
 # Definition when the workflow should run
 on:
@@ -7,12 +7,13 @@ on:
     types: 
       - closed
     branches:
-    - 'deploy-qa'
+      - 'sprint-release*'
+      - 'release-branch*'
     paths:
       - force-app/**
 
 jobs:
-  validate-pr-merged-to-qa-org:
+  validate-pr-merged-to-uat-org:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
@@ -62,11 +63,11 @@ jobs:
       - name: 'Populate auth file'
         shell: bash
         run: |
-          echo ${{ secrets.ORG_QA_URL}} > ./ORG_QA_URL.txt
+          echo ${{ secrets.ORG_UAT_URL}} > ./ORG_UAT_URL.txt
 
       # Authenticate to ORG
       - name: 'Authenticate to QA org'
-        run: sfdx auth:sfdxurl:store -f ./ORG_QA_URL.txt -s -a integration
+        run: sfdx auth:sfdxurl:store -f ./ORG_UAT_URL.txt -s -a integration
 
       # Generate delta package
       - name: 'Create Delta package'
